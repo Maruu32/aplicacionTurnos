@@ -1,0 +1,196 @@
+#contenedorPrimarioIzquierda{
+    width:25%;
+    height:100%;
+    margin: 0px 0px 0px 0px;
+    float: left;
+}
+#dia{
+    width:71%;
+    height:100%;
+    margin-left:2%;
+    margin-right:auto;
+    display:inline-block;
+    overflow:auto;
+}
+
+#calendario{
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:auto;
+    margin-bottom:50px;
+    width: 95%;
+    height:75%;
+}
+#medicos{
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:auto;
+    margin-bottom:20px;
+    width: 35%;
+    height: 8%;
+}
+#buscadorPaciente{
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:auto;
+    margin-bottom:auto;
+    width: 95%;
+    height: 8%;
+}
+#contenedorPrincipal{
+    width: 100%;
+    height: 60%;
+    margin-top: 20px;
+}
+#contenedorSecundario{
+    width:100%;
+    height: 40%;
+}
+#general{
+    width:1280px;
+    height:614px;
+    margin-left: 18px;
+    margin-right: 18px;
+}
+
+#contenedorSecundarioIzquierda{
+    float: left;
+    width:25%;
+    height:85%;
+    overflow: auto;
+}
+#contenedorSecundarioDerecha{
+    margin-left:2%;
+    margin-right:2%;
+    width:71%;
+    height:85%;
+    display:inline-block;
+}
+#contenedorTab{
+    width:31%;
+    height:15%;
+}
+#tabPrincipal{
+    height:100%;
+
+}
+#liPrincipal{
+    height:100%;
+}
+#calendarioCalendario{
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 11px;
+}
+
+h2 {
+  font: normal 20px Cookie, Arial, Helvetica, sans-serif;
+}="
+
+body {
+  background-color: #e6e6e6;
+}
+p {
+  font: normal 30px Montserrat, Arial, Helvetica, sans-serif;
+}
+table{
+  font: normal 15px Montserrat, Arial, Helvetica, sans-serif;
+  }
+.boton-trans
+{
+background:transparent;
+}
+.what-we-do-box {
+	margin-top: 300px;
+}
+.maru{
+  margin-top: 300px;
+  margin-left: 30px;
+}
+.what-we-do-box h3 {
+  font: normal 25px Montserrat, Arial, Helvetica, sans-serif;
+	padding: 15px 0;
+  text-align: center;
+  color: black;
+}
+
+.what-we-do-box p {
+  font-size: 15px;
+  color: #aaa;
+  line-height: 25px;
+  text-align: center;
+}
+
+.what-we-do-box .what-we-do-box-icon {
+  width: 110px;
+	height: 110px;
+  margin: 0 auto;
+	padding-top: 23px;
+	background: #292c2f;
+	-moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 45px;
+  font-size: 50px;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+}
+
+.what-we-do-box .what-we-do-box-icon i, .what-we-do-box .what-we-do-box-icon span { vertical-align: middle; }
+
+.maru h3 {
+  font: normal 25px Montserrat, Arial, Helvetica, sans-serif;
+	padding: 15px 0;
+  text-align: center;
+  color: black;
+}
+.maru .what-we-do-box-icon {
+  width: 110px;
+	height: 110px;
+  margin: 0 auto;
+	padding-top: 23px;
+	background: #292c2f;
+	-moz-border-radius: 50px; -webkit-border-radius: 50px; border-radius: 45px;
+  font-size: 50px;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+}
+.maru p {
+  font-size: 15px;
+  color: #aaa;
+  line-height: 25px;
+  text-align: center;
+}
+.maru .what-we-do-box-icon i, .what-we-do-box .what-we-do-box-icon span { vertical-align: middle; }
+
+
+/* Redefine los estilos de .btn */
+/* Modificar el texto y el color de fondo en los tres estados
+   principales del botón: default, hover y active. */
+.btn-ttc,
+.btn-ttc:hover,
+.btn-ttc:active {
+  color: #2E64FE;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: transparent;;
+}
+
+
+.Ause{
+  background-color: #FE2E2E;
+}
+
+.Pend{
+  background-color: #BDBDBD;
+}
+
+.CM{
+  background-color: #FA58AC;
+}
+
+.CP{
+  background-color: #E2A9F3;
+}
+
+.Aten{
+  background-color: #A9F5BC;
+}
