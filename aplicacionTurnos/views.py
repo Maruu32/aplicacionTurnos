@@ -3,23 +3,63 @@ from django.views.generic import View
 from django.contrib.auth import login, authenticate, logout
 from .forms import *
 import datetime
-from models import *
+from .models import *
+from django.db.models import Q
 
 "Pagina Inicio"
 def home(request):
+    today=str(datetime.date.today())
+    return redirect('/cambioDia/'+today)
+    #lo redirijo directamente a cambioDia con el dia que es para que ya me cargue los turnos
+'''
+    if request.method == 'POST':
+        form = turnoForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/nuevoTurno')
+    else:
+        form = turnoForm()
+
+    #form = turnoForm()
     today=datetime.date.today()
     medicos= Medico.objects.all()
-    return render(request, 'aplicacionTurnos/home.html', {'today':today.isoformat(), 'medicos':medicos})
+    return render(request, 'aplicacionTurnos/home.html', {'today':today.isoformat(), 'medicos':medicos,'form':form})
+    #return render(request, 'aplicacionTurnos/home.html', {'today':today.isoformat(), 'medicos':medicos})
+'''
 
 def cambioDia(request, dia):
+
+    if request.method == 'POST':
+        form = turnoForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/nuevoTurno')
+    else:
+        form = turnoForm()
     turnos = Turno.objects.filter(horario__dia= dia, estaActivo = True)
     medicos= Medico.objects.filter(estaActivo = True)
-    return render(request, 'aplicacionTurnos/home.html', {'today':dia, 'turnos':turnos, 'medicos':medicos})
+    return render(request, 'aplicacionTurnos/home.html', {'today':dia, 'turnos':turnos, 'medicos':medicos, 'form':form})
     #return render(request, 'aplicacionTurnos/home.html', {'today':dia})
+
+'''
+def cambioDia(request, dia, medicopk):
+
+    if request.method == 'POST':
+        form = turnoForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/nuevoTurno')
+    else:
+        form = turnoForm()
+    turnos = Turno.objects.filter(medico__pk= medicopk, horario__dia= dia, estaActivo = True)
+    medicos= Medico.objects.filter(estaActivo = True)
+    return render(request, 'aplicacionTurnos/home.html', {'today':dia, 'turnos':turnos, 'medicos':medicos, 'medicoSeleccionado':medicopk, 'form':form})
+    #return render(request, 'aplicacionTurnos/home.html', {'today':dia})
+'''
 
 "ABM Paciente"
 def nuevoPaciente(request):
-    pacientes = Paciente.objects.order_by('apellido')
+    pacientes = Paciente.objects.filter(estaActivo = True).order_by('apellido')
     if request.method == 'POST':
         form = pacienteForm(request.POST)
         if form.is_valid():
@@ -74,7 +114,7 @@ def editarMedico(request, pk):
             form.save(commit=True)
             return redirect('/nuevoMedico')
     else:
-        form = medicoForm(instance = paciente)
+        form = medicoForm(instance = medico)
     return render(request, 'aplicacionTurnos/editarMedico.html',{'form':form})
 
 def eliminarMedico(request , pk):
@@ -185,7 +225,8 @@ def nuevoTurno(request):
             return redirect('/nuevoTurno')
     else:
         form = turnoForm()
-    return render(request, 'aplicacionTurnos/nuevoTurno.html', {'form': form, 'turnos':turnos})
+    return redirect('/')
+    #return render(request, 'aplicacionTurnos/nuevoTurno.html', {'form': form, 'turnos':turnos})
 
 
 def editarTurno(request, pk):
@@ -204,9 +245,12 @@ def editarTurno(request, pk):
 
 def eliminarTurno(request , pk):
     turno = Turno.objects.get(pk=pk)
+    diaTurno = str(turno.horario.dia)
     turno.estaActivo = False
     turno.save()
-    return redirect ('/nuevoTurno')
+    #return redirect ('/nuevoTurno')
+    # redirije al mismo dia desde el que se borro el turno
+    return redirect ('/cambioDia/'+diaTurno)
 
 "Login with Model User of django"
 class LoginView(View):
@@ -229,3 +273,112 @@ class LoginView(View):
 def logout_view(request):
     logout(request)
     return redirect('/login')
+
+def busquedaPaciente(request):
+    #pacientes = Paciente.objects.order_by('apellido')
+    query = request.GET.get('q','')
+    if query:
+        qset = (
+            Q(nombre__icontains=query) |
+            Q(apellido__icontains=query) |
+            Q(dni__icontains=query)
+        )
+        #Ademas de los filtros del qset, filtro por si el paciente esta activo o no
+        results = Paciente.objects.filter(qset,estaActivo=True).distinct()
+    else:
+        return redirect('aplicacionTurnos.views.nuevoPaciente')
+    if request.method == 'POST':
+        form = pacienteForm(request.POST)
+        if form.is_valid():
+            paciente = form.save(commit=True)
+            paciente.estaActivo = True
+            paciente.save()
+            return redirect('/nuevoPaciente')
+    else:
+        form = pacienteForm()
+    return render(request, 'aplicacionTurnos/nuevoPaciente.html', {'form': form, 'pacientes':results})
+
+def busquedaMedico(request):
+    #pacientes = Paciente.objects.order_by('apellido')
+    query = request.GET.get('q','')
+    if query:
+        qset = (
+            Q(nombre__icontains=query) |
+            Q(apellido__icontains=query) |
+            Q(dni__icontains=query) |
+            Q(especialidad__nombre__icontains=query)
+        )
+        #Ademas de los filtros del qset, filtro por si el paciente esta activo o no
+        results = Medico.objects.filter(qset,estaActivo=True).distinct()
+    else:
+        return redirect('aplicacionTurnos.views.nuevoMedico')
+    if request.method == 'POST':
+        form = medicoForm(request.POST)
+        if form.is_valid():
+            medico = form.save(commit=True)
+            medico.estaActivo = True
+            medico.save()
+            return redirect('/nuevoMedico')
+    else:
+        form = medicoForm()
+    return render(request, 'aplicacionTurnos/nuevoMedico.html',{'form':form, 'medicos':results})
+
+def busquedaEspecialidad(request):
+    #pacientes = Paciente.objects.order_by('apellido')
+    query = request.GET.get('q','')
+    if query:
+        qset = (
+            Q(nombre__icontains=query)
+        )
+        #Ademas de los filtros del qset, filtro por si el paciente esta activo o no
+        results = Especialidad.objects.filter(qset).distinct()
+    else:
+        return redirect('aplicacionTurnos.views.nuevoEspecialidad')
+    if request.method == 'POST':
+        form = especialidadForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('aplicacionTurnos.views.nuevoEspecialidad')
+    else:
+        form = especialidadForm()
+    return render(request, 'aplicacionTurnos/nuevoEspecialidad.html',{'form':form, 'especialidades':results})
+
+def busquedaTratamiento(request):
+    #pacientes = Paciente.objects.order_by('apellido')
+    query = request.GET.get('q','')
+    if query:
+        qset = (
+            Q(nombre__icontains=query)
+        )
+        #Ademas de los filtros del qset, filtro por si el paciente esta activo o no
+        results = Tratamiento.objects.filter(qset).distinct()
+    else:
+        return redirect('aplicacionTurnos.views.nuevoTratamiento')
+    if request.method == 'POST':
+        form = tratamientoForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('aplicacionTurnos.views.nuevoTratamiento')
+    else:
+        form = tratamientoForm()
+    return render(request, 'aplicacionTurnos/nuevoTratamiento.html',{'form':form, 'tratamientos':results})
+
+def busquedaObraSocial(request):
+    #pacientes = Paciente.objects.order_by('apellido')
+    query = request.GET.get('q','')
+    if query:
+        qset = (
+            Q(nombre__icontains=query)
+        )
+        #Ademas de los filtros del qset, filtro por si el paciente esta activo o no
+        results = ObraSocial.objects.filter(qset).distinct()
+    else:
+        return redirect('aplicacionTurnos.views.nuevoObraSocial')
+    if request.method == 'POST':
+        form = obraSocialForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('aplicacionTurnos.views.nuevoObraSocial')
+    else:
+        form = obraSocialForm()
+    return render(request, 'aplicacionTurnos/nuevoObraSocial.html',{'form':form, 'obrasSociales':results})

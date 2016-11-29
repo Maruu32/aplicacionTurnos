@@ -2,6 +2,16 @@
 {% load widget_tweaks %}
 {% load bootstrap %}
 
+
+<!--cargo el buscador con el href y el placeholder que corresponda -->
+  {% block buscadorHref %}{% url 'aplicacionTurnos.views.busquedaEspecialidad' %}{% endblock%}
+  {% block buscadorPlaceHolder %}Buscar Especialidad{% endblock %}
+<!-- fin carga href y placeholder -->
+<!-- cargo el mensaje que ira en aviso cuando se intente borrar y la url para borrar -->
+  {% block borrarConfirmacionMensaje %}Esta seguro que quiere borrar la especialidad{% endblock %}
+  {% block borrarConfirmacionHref%}/eliminarEspecialidad/{% endblock %}
+<!-- fin carga mensaje y href(url) -->
+
     {% block ABM %}
         <h2>Especialidad</h2>
         <form method="POST">
@@ -14,16 +24,21 @@
         {% endblock%}
 
     {% block tablas %}
-        <table class="table table-hover">
+        <table class="table table-hover sortable">
+            <h1 align=center><font size=5>Especialidad</font></h1>
             <tr>
-                <td class="warning" align=center><font size=5>Especialidad</font></td>
+              <th class="warning">Nombre</th>
+              <th class="warning sorttable_nosort">Editar</th>
+              <th class="warning sorttable_nosort">Borrar</th>
             </tr>
+
             {% for especialidad in especialidades %}
                 </tr>
                     <td class="success">{{especialidad.nombre}}</td>
                     <td class="success"><a href="{% url 'aplicacionTurnos.views.editarEspecialidad' pk=especialidad.pk %}"><i class="fa fa-pencil fa-2x" aria-hidden="true"></i></a></td>
-                    <td class="success"><a href="{% url 'aplicacionTurnos.views.eliminarEspecialidad' pk=especialidad.pk %}"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td>
+                    <td class="success"><a href="javascript:borrarConfirmacion({{especialidad.pk}},'{{especialidad}}')"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td>
                 </tr>
+
             {% endfor %}
           </table>
     {% endblock %}

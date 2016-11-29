@@ -11,6 +11,19 @@
     margin-right:auto;
     display:inline-block;
     overflow:auto;
+    /*background-color: red;*/
+}
+#tablaArriba {
+  width: 100%;
+  height: 20%;
+  /*background-color: green;*/
+}
+
+#tablaAbajo {
+  width: 100%;
+  height: 80%;
+  overflow: auto;
+  /*background-color: blue;*/
 }
 
 #calendario{
@@ -36,19 +49,30 @@
     margin-bottom:auto;
     width: 95%;
     height: 8%;
+    /*background-color: red;*/
 }
 #contenedorPrincipal{
     width: 100%;
     height: 60%;
-    margin-top: 20px;
+    /*margin-top: 20px;*/
+    margin-top: 1%;
 }
 #contenedorSecundario{
     width:100%;
     height: 40%;
+    /* este padding es para que los botones "medico","paciente","nuevo turno" y "auxiliares" no esten pegados al contenedorPrincipal */
+    padding-top: 4%;
+    /*background-color: red;*/
 }
 #general{
-    width:1280px;
-    height:614px;
+    /*width:1280px;
+    height:614px;*/
+    /*width: 100%;
+    height: 100%;*/
+    /* Informacion sobre vw y vh*/
+    /* http://stackoverflow.com/questions/1575141/make-div-100-height-of-browser-window */
+    width: 100vw;
+    height: 89vh; /* es 89 y no 100 porque el header (el que tiene el titulo DentalClinic) no esta dentro del div general, por lo que me esta robando espacio de pantalla provocando que si lo dejo en 100 siempre aparece el scroll-y*/
     margin-left: 18px;
     margin-right: 18px;
 }
@@ -85,7 +109,7 @@
 
 h2 {
   font: normal 20px Cookie, Arial, Helvetica, sans-serif;
-}="
+}
 
 body {
   background-color: #e6e6e6;
@@ -95,13 +119,25 @@ p {
 }
 table{
   font: normal 15px Montserrat, Arial, Helvetica, sans-serif;
+  /* para sacar la separacion entre filas tiene que tener 0 de border spacing */
+  /*
+  border-spacing:0px;
+  */
   }
+/* hay que centrar los titulos, pero no anda, boostrap los tira a la izquierda */
+/*
+th{
+  text-align: center;
+}
+*/
 .boton-trans
 {
 background:transparent;
 }
+
+/* ¿por que tenia un margen de 300px? */
 .what-we-do-box {
-	margin-top: 300px;
+	/*margin-top: 300px;*/
 }
 .maru{
   margin-top: 300px;
@@ -194,3 +230,154 @@ background:transparent;
 .Aten{
   background-color: #A9F5BC;
 }
+
+/* ------------- Estilo de Modal ------------- */
+
+.scroll {
+  height:300px;
+  width: 300px;
+  overflow-y: auto;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    /*padding-top:100px;*/
+    padding-top: 10%;
+    /*padding-top: 110px;*/ /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    /*background-color: rgb(0,0,0); /* Fallback color */
+    /*background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-peligro {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    /*padding-top:100px;*/
+    padding-top: 20%;
+    /*padding-top: 110px;*/ /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  /*display:none;*/
+  /*z-index: 100;*/
+    position: relative;
+    /*top:300px;
+    /*top:100;*/
+    background-color: #fefefe;
+    margin:auto;
+    /*margin-top: 510px;*/
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+/* -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    /*-webkit-animation-iteration-count: 3;
+    -webkit-animation-direction: alternate;*/
+    animation-name: animacionEntradaBajar;
+    animation-duration: 0.4s;
+    /*animation-iteration-count: 3;
+    animation-direction: alternate;*/
+}
+
+/* Add Animation */
+/*
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+*/
+
+/* Animacion Entrada Bajar */
+@keyframes animacionEntradaBajar {
+    0%  {top:100%; opacity:0}
+    100%    {top:0%;opacity:1}
+}
+/* si se quiere reiniciar una animacion sin hacer nada utilizar animacionVacia*/
+/*
+@keyframes animacionVacia{
+
+}
+*/
+
+/*Animacion Salida Subir*/
+
+@keyframes animacionSalidaSubir {
+    0%  {top:70%; opacity:1}
+    100%    {top:150%; opacity:0}
+}
+
+/* Animacion Salida Bajar */
+/*
+@keyframes animacionSalidaBajar {
+    0%  {top:-510px; opacity:1}
+    100%    {top:0px; opacity:0}
+}
+*/
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.modal-header-peligro {
+  padding: 2px 16px;
+  background-color: #f44336;
+  color: white;
+}
+
+.modal-footer-peligro {
+  padding: 2px 16px;
+  background-color: #f44336;
+  color: white;
+}
+
+/* ------------- Fin Estilo Modal ------------- */
+
+/* estilo para tablas sortable (reordenables) */
+/*Muestra 2 flechitas sobre las columnas por las que se puede reordenar en las tablas */
+
+table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
+    content: " \25B4\25BE"
+}
+/* fin estilo tablas sortable(reordenables) */

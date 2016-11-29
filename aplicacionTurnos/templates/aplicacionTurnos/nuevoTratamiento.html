@@ -2,6 +2,17 @@
 {% load widget_tweaks %}
 {% load bootstrap %}
 
+
+
+<!--cargo el buscador con el href y el placeholder que corresponda -->
+  {% block buscadorHref %}{% url 'aplicacionTurnos.views.busquedaTratamiento' %}{% endblock%}
+  {% block buscadorPlaceHolder %}Buscar Tratamiento{% endblock %}
+<!-- fin carga href y placeholder -->
+<!-- cargo el mensaje que ira en aviso cuando se intente borrar y la url para borrar -->
+  {% block borrarConfirmacionMensaje %}Esta seguro que quiere borrar el tratamiento{% endblock %}
+  {% block borrarConfirmacionHref%}/eliminarTratamiento/{% endblock %}
+<!-- fin carga mensaje y href(url) -->
+
         {% block ABM %}
             <h2>Tratamiento</h2>
             <form method="POST">
@@ -16,12 +27,14 @@
             {% endblock%}
 
     {% block tablas %}
-        <table class="table table-hover">
-          <font size=5><p align=center>Tratamientos</p></font>
+        <table class="table table-hover sortable">
+          <font size=5><h1 align=center>Tratamientos</h1></font>
             <tr>
-                <td class="warning">Tratamiento</td>
-                <td class="warning">Duracion</td>
-                <td class="warning">Precio</td>
+                <th class="warning">Tratamiento</th>
+                <th class="warning">Duracion</th>
+                <th class="warning">Precio</th>
+                <th class="warning sorttable_nosort">Editar</th>
+                <th class="warning sorttable_nosort">Eliminar</th>
             </tr>
             {% for tratamiento in tratamientos %}
                 </tr>
@@ -29,7 +42,7 @@
                     <td class="success">{{tratamiento.duracion}}</td>
                     <td class="success">{{tratamiento.precio}}</td>
                     <td class="success"><a href="{% url 'aplicacionTurnos.views.editarTratamiento' pk=tratamiento.pk %}"><i class="fa fa-pencil fa-2x" aria-hidden="true"></i></a></td>
-                    <td class="success"><a href="{% url 'aplicacionTurnos.views.eliminarTratamiento' pk=tratamiento.pk %}"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td>
+                    <td class="success"><a href="javascript:borrarConfirmacion({{tratamiento.pk}},'{{tratamiento}}')"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td>
                 </tr>
             {% endfor %}
           </table>

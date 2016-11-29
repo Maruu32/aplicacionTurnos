@@ -22,6 +22,12 @@
   <script src='../static/js/es.js'></script>
   <!---Script librerias externas--->
   <script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Script reordenar tablas -->
+<!-- http://www.kryogenix.org/code/browser/sorttable/ -->
+  <script src="../../static/js/sorttable.js"></script>
+
+
 </head>
 
   <body>
@@ -29,6 +35,17 @@
 
       <div class="header-limiter">
         <h1>Dental<span>Clinic</span></h1>
+
+        <!-- Buscador Paciente por nombre o apellido o DNI-->
+        <div id="buscadorPaciente">
+          <!--<form class="navbar-form navbar-left" role="search" role="search" action="{% url 'aplicacionTurnos.views.busquedaPaciente' %}" method="GET">-->
+          <form class="navbar-form navbar-left" role="search" role="search" action="{% block buscadorHref %}{%endblock%}" method="GET">
+            <!--<input name="q" value="{{ query|escape }}" type="text" class="form-control" placeholder="Buscar Paciente">-->
+            <input name="q" value="{{ query|escape }}" type="text" class="form-control" placeholder="{%block buscadorPlaceHolder%}{%endblock%}">
+            <input type="submit" value="Buscar" class="btn btn-default">
+          </form>
+        </div>
+        <!--Fin Buscador Paciente -->
 
         <div class="header-user-menu">
           <img src="/static/imagenes/Doctor.png" alt="User Image"/>
@@ -40,6 +57,30 @@
         </div>
       </div>
     </header>
+
+
+    <!-- Modal Peligro Borrar-->
+    <div id="myModal" class="modal-peligro">
+
+        <!-- Modal content -->
+        <div id="modal-content" class="modal-content">
+            <div class="modal-header-peligro">
+                <span class="close">x</span>
+                <h2>Atencion</h2>
+            </div>
+            <div class="modal-body">
+                <p id="aviso"></p>
+                <a href="" id="borrarDefinitivo"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+
+            </div>
+            <div class="modal-footer-peligro">
+                <h3>Modal Footer</h3>
+            </div>
+        </div>
+
+    </div>
+    <!-- Fin Modal Peligro Borrar-->
+
     <div id='general'>
       <div id='contenedorPrincipal'>
         <div id='contenedorPrimarioIzquierda'>
@@ -79,7 +120,8 @@
          <!--Boton para nuevo turno-->
          <div class="col-sm-2 maru">
          <div class="what-we-do-box-icon">
-           <a class="btn btn-ttc" href="{%url 'aplicacionTurnos.views.nuevoTurno'%}">
+           <!-- le saque { % url 'aplicacionTurnos.views.nuevoTurno' % } -->
+           <a class="btn btn-ttc" href="">
              <i class="fa fa-plus-square fa-4x"></i></a></div>
              <h3>Nuevo Turno</h3>
              <p>Agregar y administrar Turnos</p>
@@ -105,4 +147,69 @@
        </div>
      </div>
   </body>
+
+
+
+  <script>
+      // Get the modal
+      var modal = document.getElementById('myModal');
+
+      //consigo modal-content
+      var modalContent = document.getElementById('modal-content');
+
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      var borrarDefinitivo = document.getElementById("borrarDefinitivo");
+      var aviso = document.getElementById("aviso");
+
+
+      function borrarConfirmacion (pk, objeto) {
+        aviso.innerHTML = "¿{%block borrarConfirmacionMensaje%}{%endblock%} " + objeto + "?";
+        borrarDefinitivo.href = "{%block borrarConfirmacionHref%}{%endblock%}" + pk + "/";
+        aparecer (modal,modalContent);
+      }
+
+
+      function aparecer(modalGeneral, modalContenido) {
+        modalContenido.style.marginTop = "auto";
+        modalContenido.style.animationName = "animacionEntradaBajar";
+        modalGeneral.style.display = "block";
+      }
+
+      span.onclick = function () {
+        close (modal, modalContent);
+      }
+
+      var general;
+      var contenido;
+
+      function close(modalGeneral, modalContenido){
+        modalContenido.style.marginTop = "-410px";
+        general = modalGeneral;
+        contenido = modalContenido;
+        modalContenido.addEventListener("animationend",desaparecer);
+        modalContenido.style.animationName = "animacionSalidaSubir";
+      }
+
+
+      window.onclick = function(event) {
+          if (event.target == modal) {
+            close(modal, modalContent);
+          } else if (event.target == modal2) {
+              close(modal2,modalContent2);
+          }
+      }
+
+
+      function desaparecer (){
+          general.style.display = "none";
+          contenido.removeEventListener("animationend", desaparecer);
+      }
+
+
+  </script>
+
+
 </html>
